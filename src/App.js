@@ -1,11 +1,17 @@
 import './App.css';
-import React, {useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import { getMonth } from './util';
 import CalendarHeader from './components/CalendarHeader';
 import Sidebar from './components/Sidebar';
 import Month from './components/Month';
+import GlobalContext from './context/GlobalContext';
 function App() {
-  const [currentMonth, setCurrentMonth] = useState(getMonth())
+  const [currentMonth, setCurrentMonth] = useState(getMonth());
+  const {monthIndex} = useContext(GlobalContext);
+
+  useEffect(() => {
+    setCurrentMonth(getMonth(monthIndex))
+  },[monthIndex]);
 
   return (
     <div className="App">

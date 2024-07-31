@@ -19,9 +19,9 @@ const CalendarHeader = () => {
       <h1 className='mr-10 text-xl text-gray-500 font-bold'>
         Calendar
       </h1>
-      <button 
-      className='border rounded py-2 px-4 mr-5'
-      onClick={handleReset}>
+      <button
+        className='border rounded py-2 px-4 mr-5'
+        onClick={handleReset}>
         Today
       </button>
       <button>

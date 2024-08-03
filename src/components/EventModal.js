@@ -3,7 +3,7 @@ import GlobalContext from '../context/GlobalContext'
 const EventModel = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [selectedLabel, setSelectedLabel] = useState(0);
+    const [selectedLabel, setSelectedLabel] = useState("indigo");
     const labelClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
     // Context
     const { setShowEventModal, daySelected, dispatchCalEvent } = useContext(GlobalContext);
@@ -62,15 +62,14 @@ const EventModel = () => {
                         <span class="material-symbols-outlined text-gray-400">
                             bookmark_border
                         </span>
-                        {console.log(labelClasses)}
                         <div className="flex gap-x-2">
                             {labelClasses.map((color, i) => (
                                 <span
                                     key={i}
-                                    onClick={() => setSelectedLabel(i)}
+                                    onClick={() => setSelectedLabel(color)}
                                     className={`flex justify-center items-center rounded-full h-6 w-6 bg-${color}-500 cursor-pointer`}
                                 >
-                                    {selectedLabel === i  && <span class="material-symbols-outlined text-white text-sm">
+                                    {selectedLabel === color  && <span class="material-symbols-outlined text-white text-sm">
                                         check
                                     </span>}
                                 </span>

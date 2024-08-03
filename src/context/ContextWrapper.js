@@ -46,7 +46,8 @@ const ContextWrapper = (props) => {
                 setDaySelected,
                 showEventModal,
                 setShowEventModal,
-                dispatchCalEvent
+                dispatchCalEvent,
+                savedEvents,
             }}
         >
             {props.children}

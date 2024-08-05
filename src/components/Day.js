@@ -3,15 +3,15 @@ import React, { useContext, useEffect, useState } from 'react'
 import GlobalContext from '../context/GlobalContext';
 
 const Day = ({ day, rowIndex }) => {
-    const { setDaySelected, setShowEventModal, savedEvents, setSelectedEvent } = useContext(GlobalContext);
+    const { setDaySelected, setShowEventModal, filteredEvents, setSelectedEvent } = useContext(GlobalContext);
     const [dayEvents, setDayEvents] = useState([]);
     // Show all events on the day
     useEffect(() => {
-        const events = savedEvents.filter(
+        const events = filteredEvents.filter(
             (evt) => dayjs(evt.day).format("DD-MM-YY") === day.format("DD-MM-YY")
         );
         setDayEvents(events);
-    }, [savedEvents, day])
+    }, [filteredEvents, day])
 
     const getCurrentDayClass = () => {
         return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY") ? 'bg-blue-600 text-white rounded-full w-7' : "";

@@ -3,6 +3,14 @@ import GlobalContext from '../context/GlobalContext'
 const EventModel = () => {
     const { setShowEventModal, daySelected, dispatchCalEvent, selectedEvent } = useContext(GlobalContext);
     const labelClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
+    // const colorClasses = {
+    //     indigo: "bg-indigo-500",
+    //     gray: "bg-gray-500",
+    //     green: "bg-green-500",
+    //     blue: "bg-blue-500",
+    //     red: "bg-red-500",
+    //     purple: "bg-purple-500"
+    // };
     const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
     const [description, setDescription] = useState(selectedEvent ? selectedEvent.description : "");
     const [selectedLabel, setSelectedLabel] = useState(selectedEvent ? labelClasses.find(lb => lb === selectedEvent.label) : labelClasses[0]);

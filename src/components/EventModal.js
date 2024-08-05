@@ -1,23 +1,29 @@
 import React, { useContext, useState } from 'react'
 import GlobalContext from '../context/GlobalContext'
 const EventModel = () => {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [selectedLabel, setSelectedLabel] = useState("indigo");
+    const { setShowEventModal, daySelected, dispatchCalEvent, selectedEvent } = useContext(GlobalContext);
     const labelClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
+    const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
+    const [description, setDescription] = useState(selectedEvent ? selectedEvent.description : "");
+    const [selectedLabel, setSelectedLabel] = useState(selectedEvent ? labelClasses.find(lb => lb === selectedEvent.label) : labelClasses[0]);
     // Context
-    const { setShowEventModal, daySelected, dispatchCalEvent } = useContext(GlobalContext);
     // submit handler
-    function handleSubmit(e){
+    function handleSubmit(e) {
         e.preventDefault();
         const calendarEvent = {
-            title, 
-            description, 
+            title,
+            description,
             label: selectedLabel,
             day: daySelected.valueOf(),
-            id: Date.now()
+            id: selectedEvent ? selectedEvent.id : Date.now(),
         }
-        dispatchCalEvent({type: 'push', payload: calendarEvent});
+        if (selectedEvent) {
+            console.log('Update...');
+            dispatchCalEvent({ type: 'update', payload: calendarEvent });
+        } else {
+            dispatchCalEvent({ type: 'push', payload: calendarEvent });
+        }
+
         setShowEventModal(false)
     }
     return (
@@ -27,11 +33,23 @@ const EventModel = () => {
                     <span class="material-symbols-outlined text-gray-400">
                         drag_handle
                     </span>
-                    <button onClick={() => setShowEventModal(false)}>
-                        <span class="material-symbols-outlined text-gray-400">
-                            close
-                        </span>
-                    </button>
+                    <div>
+                        {selectedEvent && (
+                            <span
+                                onClick={() => {
+                                    dispatchCalEvent({ type: 'delete', payload: selectedEvent })
+                                    setShowEventModal(false)
+                                }}
+                                class="material-symbols-outlined text-gray-400 cursor-pointer">
+                                delete
+                            </span>
+                        )}
+                        <button onClick={() => setShowEventModal(false)}>
+                            <span class="material-symbols-outlined text-gray-400">
+                                close
+                            </span>
+                        </button>
+                    </div>
                 </header>
                 <div className='p-3'>
                     <div className='grid grid-cols-1/5 items-end gap-y-7'>
@@ -69,7 +87,7 @@ const EventModel = () => {
                                     onClick={() => setSelectedLabel(color)}
                                     className={`flex justify-center items-center rounded-full h-6 w-6 bg-${color}-500 cursor-pointer`}
                                 >
-                                    {selectedLabel === color  && <span class="material-symbols-outlined text-white text-sm">
+                                    {selectedLabel === color && <span class="material-symbols-outlined text-white text-sm">
                                         check
                                     </span>}
                                 </span>
@@ -79,10 +97,10 @@ const EventModel = () => {
                     </div>
                 </div>
                 <footer className='flex justify-end w-100 border-t p-3 mt-5'>
-                    <button 
-                    type='submit' 
-                    className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white'
-                    onClick={handleSubmit}
+                    <button
+                        type='submit'
+                        className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white'
+                        onClick={handleSubmit}
                     >
                         Save
                     </button>

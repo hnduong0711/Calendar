@@ -3,15 +3,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import GlobalContext from '../context/GlobalContext';
 
 const Day = ({ day, rowIndex }) => {
-    const { setDaySelected, setShowEventModal, savedEvents } = useContext(GlobalContext);
+    const { setDaySelected, setShowEventModal, savedEvents, setSelectedEvent } = useContext(GlobalContext);
     const [dayEvents, setDayEvents] = useState([]);
-    
+    // Show all events on the day
     useEffect(() => {
         const events = savedEvents.filter(
             (evt) => dayjs(evt.day).format("DD-MM-YY") === day.format("DD-MM-YY")
         );
-        // console.log(savedEvents);
-        // console.log(events);
         setDayEvents(events);
     }, [savedEvents, day])
 
@@ -37,6 +35,7 @@ const Day = ({ day, rowIndex }) => {
                 {dayEvents.map((e, i) => (
                     <div
                         key={i}
+                        onClick={() => setSelectedEvent(e)}
                         className={`bg-${e.label}-200 p-1 mr-3 text-gray-600 text-sm rounded mb-1 truncate`}
                     >
                         {e.title}

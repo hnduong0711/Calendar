@@ -7,7 +7,7 @@ function savedEventsReducer(state, {type, payload}){
         case 'push':
             return [...state, payload]
         case 'update':
-            return state.map(e => e.id === payload ? payload : e)
+            return state.map(e => e.id === payload.id ? payload : e)
         case 'delete':
             return state.filter(e => e.id !== payload.id)
         default:
@@ -26,7 +26,9 @@ const ContextWrapper = (props) => {
     const [smallCalendarMonth, setSmallCalendarMonth] = useState(null);
     const [daySelected, setDaySelected] = useState(dayjs());
     const [showEventModal, setShowEventModal] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState();
     const [savedEvents, dispatchCalEvent] = useReducer(savedEventsReducer, [], initEvents);
+
     useEffect(() => {
         localStorage.setItem('savedEvents', JSON.stringify(savedEvents))
     }, [savedEvents]);
@@ -48,6 +50,8 @@ const ContextWrapper = (props) => {
                 setShowEventModal,
                 dispatchCalEvent,
                 savedEvents,
+                selectedEvent,
+                setSelectedEvent
             }}
         >
             {props.children}
